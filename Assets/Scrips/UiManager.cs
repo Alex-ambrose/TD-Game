@@ -1,36 +1,35 @@
-using System.Collections;
-using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
-using UnityEngine.UI;
-
 
 public class UiManager : MonoBehaviour
 {
     public GameManager gameManager;
-    public ButtonItem levelselectbuttonprefab;
-    public Transform levelselectParent;
-    // Start is called before the first frame update
+    public ButtonItem levelSelectButtonPrefab;
+    public Transform levelSelectParent;
+
     void Start()
     {
        var Files = Directory.EnumerateFiles(Application.persistentDataPath);
         foreach (var file in Files)
         {
-            var button = Instantiate(levelselectbuttonprefab);
-            button.button.onClick.AddListener(() => loadlevel(file));
+            var button = Instantiate(levelSelectButtonPrefab);
+            button.button.onClick.AddListener(() => LoadLevel(file));
             button.text.text = Path.GetFileName(file);
-            button.transform.parent = levelselectParent;
+            button.transform.parent = levelSelectParent;
         }
     }
 
-    // Update is called once per frame
     void Update()
     {
-        
+        if(Input.GetKeyDown(KeyCode.Escape))
+        {
+            levelSelectParent.gameObject.SetActive(!levelSelectParent.gameObject.activeSelf);
+        }
     }
-    void loadlevel(string file)
+
+    void LoadLevel(string file)
     {
         gameManager.init(file);
-        levelselectParent.gameObject.SetActive(false);
+        levelSelectParent.gameObject.SetActive(false);
     }
 }
