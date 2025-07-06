@@ -5,39 +5,47 @@ using UnityEngine;
 
 public class Grid : MonoBehaviour
 {
-    [SerializeField] private int width;
-    [SerializeField] private int height;
-    [SerializeField] private Vector3 cellsize;
-    private Cell[,] gridObjects;
-    public Cell gridcell;
+    public int width;
+    public int height;
+    public Vector3 cellSize = new Vector3(1,1,1);
+    public Cell[,] gridObjects;
+    public Cell gridCellPrefab;
 
-    public int Width => width;
-    public int Height => height;
     public void Add(Cell gameObject, int x, int y)
     {
         gridObjects[x, y] = gameObject;
     }
+
     public void Remove(int x, int y)
     {
         Destroy(gridObjects[x, y].gameObject);
         gridObjects[x, y] = null;
-
     }
+
     public bool IsPopulated(int x, int y)
     {
         return gridObjects[x, y] != null;
     }
+
     public bool CanAdd(int x, int y)
     {
         return gridObjects[x, y] == null;
     }
+
     public Vector3 GetCellPosition(Vector3Int gridposition)
     {
-        return new Vector3(gridposition.x * cellsize.x, gridposition.y * cellsize.y, gridposition.z * cellsize.z);
+        return new Vector3(
+            gridposition.x * cellSize.x, 
+            gridposition.y * cellSize.y, 
+            gridposition.z * cellSize.z);
     }
 
     public void Clear()
     {
+        if (gridObjects == null)
+        {
+            return;
+        }
         for (int x = 0; x < gridObjects.GetLength(0); x++)
         {
             for (int z = 0; z < gridObjects.GetLength(1); z++)
@@ -46,15 +54,17 @@ public class Grid : MonoBehaviour
             }
         }
     }
+
     public void GenerateGrid()
     {
+        Clear();
         gridObjects = new Cell[width, height];
-        for (int x = 0; x < width; x++)
+        for (int x = 0; x < gridObjects.GetLength(0); x++)
         {
-            for (int z = 0; z < height; z++)
+            for (int z = 0; z < gridObjects.GetLength(1); z++)
             {
-                var newobject = Instantiate(gridcell);
-
+                var newobject = Instantiate(gridCellPrefab);
+                newobject.gridPosition = new Vector2Int(x, z);
                 newobject.transform.position = GetCellPosition(new Vector3Int(x, 1, z));
                 if (CanAdd(x, z))
                 {
@@ -63,47 +73,38 @@ public class Grid : MonoBehaviour
             }
         }
     }
-    public void GenerateGrid(SavedLevel level)
-    {
-        gridObjects = new Cell[level.width, level.height];
-        for (int x = 0; x < level.width; x++)
-        {
-            for (int z = 0; z < level.height; z++)
-            {
-                var newobject = Instantiate(gridcell);
 
-                newobject.transform.position = GetCellPosition(new Vector3Int(x, 1, z));
-                if (CanAdd(x, z))
-                {
-                    Add(newobject, x, z);
-                }
-                
-            }
-        }
-        foreach(var SpawnedObject in level.SpawnedObjects)
+    public void LoadGridFromSave(SavedLevel level)
+    {
+        width = level.gridSettings.width;
+        height = level.gridSettings.height;
+        cellSize = level.gridSettings.cellSize.ToVector3();
+        GenerateGrid();
+        foreach (var pathNode in level.gridPath)
         {
-            var cell = gridObjects[SpawnedObject.position.x, SpawnedObject.position.y];
-            cell.Toggle();
-            cell.setBlocktype(SpawnedObject.blocktype);
+            var cell = gridObjects[pathNode.position.x, pathNode.position.y];
+            cell.SetNavigationType(pathNode.cellNavigationType);
         }
     }
-    public List<SpawnedObject> GetpopulatedCells()
-    {
-        var SpawndObjects = new List<SpawnedObject>();
-        for (int x = 0; x < width; x++)
-        {
-            for (int z = 0; z < height; z++)
-            {
-                if (gridObjects[x, z].hasChild())
-                {
-                    var SpawndedObject = new SpawnedObject();
-                    SpawndedObject.position = new Vector2Int(x, z);
-                    SpawndedObject.blocktype = gridObjects[x, z].BlockType;
 
-                    SpawndObjects.Add(SpawndedObject);
+    public List<GridPathNode> GetGridPath()
+    {
+        var gridPath = new List<GridPathNode>();
+        for (int x = 0; x < gridObjects.GetLength(0); x++)
+        {
+            for (int z = 0; z < gridObjects.GetLength(1); z++)
+            {
+                var cell = gridObjects[x, z];
+                if (cell.HasNavigationType())
+                {
+                    var pathNode = new GridPathNode();
+                    pathNode.position = Vec2Int.FromVector2Int(cell.gridPosition);
+                    pathNode.cellNavigationType = cell.navigationType;
+
+                    gridPath.Add(pathNode);
                 }
             }
         }
-        return SpawndObjects;
+        return gridPath;
     }
 }

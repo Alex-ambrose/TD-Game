@@ -118,7 +118,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f0507e7827f191947b6c4b3ed5c21a75, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Prefab: {fileID: 8094928740442210628, guid: 2f05c346af61e9d4fa6d561dc1db9a1d, type: 3}
+  spawnedObjectPrefab: {fileID: 8094928740442210628, guid: 2f05c346af61e9d4fa6d561dc1db9a1d, type: 3}
+  gridPosition: {x: 0, y: 0}
+  navigationType: 0
   path: {fileID: 2100000, guid: 87142dc1a3a63bb4ebcaa9f0329f48d1, type: 2}
   start: {fileID: 2100000, guid: 3bed88c0e424ff54585644a060b2eb4b, type: 2}
   finish: {fileID: 2100000, guid: 70b726986b2f93a459ece7df17598cc0, type: 2}
+  defaultMaterial: {fileID: 2100000, guid: 2c9f29043c4d7d0458eb7e24834c4715, type: 2}

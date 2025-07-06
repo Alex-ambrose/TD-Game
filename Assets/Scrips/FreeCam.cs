@@ -5,13 +5,7 @@ using UnityEngine;
 public class FreeCam : MonoBehaviour
 {
     public float MoveSpeed = 5.0f;
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
 
-    // Update is called once per frame
     void Update()
     {
         if (Input.GetKey(KeyCode.W))
@@ -30,7 +24,15 @@ public class FreeCam : MonoBehaviour
         {
             transform.position += transform.right * MoveSpeed * Time.deltaTime;
         }
-        if(Input.GetMouseButton(1))
+        if (Input.GetKey(KeyCode.E))
+        {
+            transform.position += new Vector3(0, MoveSpeed * Time.deltaTime, 0);
+        }
+        if (Input.GetKey(KeyCode.Q))
+        {
+            transform.position += new Vector3(0, -MoveSpeed * Time.deltaTime, 0);
+        }
+        if (Input.GetMouseButton(1))
         {
             Vector2 mouseDelta = MoveSpeed * new Vector2(Input.GetAxis("Mouse X"), -Input.GetAxis("Mouse Y"));
             Quaternion rotation = transform.rotation;

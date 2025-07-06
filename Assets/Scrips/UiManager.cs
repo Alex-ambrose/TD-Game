@@ -12,10 +12,10 @@ public class UiManager : MonoBehaviour
        var Files = Directory.EnumerateFiles(Application.persistentDataPath);
         foreach (var file in Files)
         {
-            var button = Instantiate(levelSelectButtonPrefab);
-            button.button.onClick.AddListener(() => LoadLevel(file));
-            button.text.text = Path.GetFileName(file);
-            button.transform.parent = levelSelectParent;
+            var buttonItem = Instantiate(levelSelectButtonPrefab);
+            buttonItem.button.onClick.AddListener(() => LoadLevel(file));
+            buttonItem.text.text = Path.GetFileName(file);
+            buttonItem.transform.parent = levelSelectParent;
         }
     }
 
@@ -29,7 +29,7 @@ public class UiManager : MonoBehaviour
 
     void LoadLevel(string file)
     {
-        gameManager.init(file);
+        gameManager.LoadFromSave(file);
         levelSelectParent.gameObject.SetActive(false);
     }
 }

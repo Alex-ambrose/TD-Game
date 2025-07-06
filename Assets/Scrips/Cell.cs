@@ -1,52 +1,69 @@
-using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
+
+public enum CellNavigationType
+{
+    Start = 0,
+    Path = 1,
+    Finish = 2,
+    None = 3
+}
 
 public class Cell : MonoBehaviour
 {
-    public GameObject Prefab;
-    private GameObject spawnedObject;
-    public int BlockType;
+    public GameObject spawnedObjectPrefab;
+
+    public Vector2Int gridPosition;
+    public CellNavigationType navigationType;
+    private MeshRenderer meshRenderer;
     public Material path;
     public Material start;
     public Material finish;
-    // Start is called before the first frame update
+    public Material defaultMaterial;
+
+    private GameObject spawnedObject;
+
     void Start()
     {
-
+        meshRenderer = GetComponent<MeshRenderer>();
+        navigationType = CellNavigationType.None;
     }
 
-    // Update is called once per frame
     void Update()
     {
 
     }
 
-    public void setBlocktype(int type)
+    public void SetNavigationType(CellNavigationType type)
     {
-        BlockType = type;
-        var selectedmaterial = path;
-        if (type == 0)
+        if(meshRenderer == null)
         {
-            selectedmaterial = start;
+            meshRenderer = GetComponent<MeshRenderer>();
         }
-        else if (type == 1)
+        navigationType = type;
+
+        if (type == CellNavigationType.Start)
         {
-            selectedmaterial = path;
+            meshRenderer.material = start;
+        }
+        else if (type == CellNavigationType.Path)
+        {
+            meshRenderer.material = path;
+        }
+        else if (type == CellNavigationType.Finish)
+        {
+            meshRenderer.material = finish;
         }
         else
         {
-            selectedmaterial = finish;
+            meshRenderer.material = defaultMaterial;
         }
-        spawnedObject.GetComponent<MeshRenderer>().material = selectedmaterial;
     }
 
     public void Toggle()
     {
         if (spawnedObject == null)
         {
-            spawnedObject = Instantiate(Prefab);
+            spawnedObject = Instantiate(spawnedObjectPrefab);
             spawnedObject.transform.parent = transform;
             spawnedObject.transform.localPosition = new Vector3(0, 1, 0);
         }
@@ -58,10 +75,10 @@ public class Cell : MonoBehaviour
         {
             spawnedObject.SetActive(true);
         }
-        
     }
-    public bool hasChild()
-    { return spawnedObject != null && spawnedObject.activeInHierarchy; }
 
-
+    public bool HasNavigationType()
+    { 
+        return navigationType != CellNavigationType.None; 
+    }
 }
