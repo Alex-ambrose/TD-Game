@@ -10,7 +10,8 @@ public class Grid : MonoBehaviour
     public Vector3 cellSize = new Vector3(1,1,1);
     public Cell[,] gridObjects;
     public Cell gridCellPrefab;
-
+    public float TotalGridWidth => width*cellSize.x;
+    public float TotalGridHeight => height*cellSize.y;
     public void Add(Cell gameObject, int x, int y)
     {
         gridObjects[x, y] = gameObject;
@@ -80,31 +81,35 @@ public class Grid : MonoBehaviour
         height = level.gridSettings.height;
         cellSize = level.gridSettings.cellSize.ToVector3();
         GenerateGrid();
-        foreach (var pathNode in level.gridPath)
+
+        Node lastNode = null;
+        foreach (var pathNode in level.gridPath.nodes)
         {
-            var cell = gridObjects[pathNode.position.x, pathNode.position.y];
-            cell.SetNavigationType(pathNode.cellNavigationType);
+            RecalculatePath(lastNode, pathNode, level.gridPath);
+            lastNode = pathNode;
         }
     }
 
-    public List<GridPathNode> GetGridPath()
-    {
-        var gridPath = new List<GridPathNode>();
-        for (int x = 0; x < gridObjects.GetLength(0); x++)
-        {
-            for (int z = 0; z < gridObjects.GetLength(1); z++)
-            {
-                var cell = gridObjects[x, z];
-                if (cell.HasNavigationType())
-                {
-                    var pathNode = new GridPathNode();
-                    pathNode.position = Vec2Int.FromVector2Int(cell.gridPosition);
-                    pathNode.cellNavigationType = cell.navigationType;
-
-                    gridPath.Add(pathNode);
-                }
-            }
+    public void RecalculatePath(Node lastNode, Node newNode, GridPath path){
+        var newCell = gridObjects[newNode.gridPosition.x, newNode.gridPosition.y];
+        if(lastNode == null){
+            newCell.SetNavigationType(CellNavigationType.Start);
+            return;
         }
-        return gridPath;
+
+        var lastCell = gridObjects[lastNode.gridPosition.x, lastNode.gridPosition.y];
+
+        if(lastNode.gridPosition == newNode.gridPosition){
+            lastCell.SetNavigationType(CellNavigationType.None);
+
+            var newFinishNode = path.nodes[path.nodes.Count - 1];
+            var newFinishCell = gridObjects[newFinishNode.gridPosition.x, newFinishNode.gridPosition.y];
+            newFinishCell.SetNavigationType(CellNavigationType.Finish);
+            return;
+        }
+        if(lastCell.navigationType != CellNavigationType.Start){
+            lastCell.SetNavigationType(CellNavigationType.Path);
+        }
+        newCell.SetNavigationType(CellNavigationType.Finish);
     }
 }

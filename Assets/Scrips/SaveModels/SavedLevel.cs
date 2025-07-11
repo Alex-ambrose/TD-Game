@@ -5,8 +5,23 @@ using UnityEngine;
 
 public class SavedLevel
 {
-    public List<GridPathNode> gridPath;
+    public GridPath gridPath;
     public GridSettings gridSettings;
+}
+
+public class GridPath
+{
+    public List<Node> nodes;
+
+    public GridPath(){
+         nodes = new List<Node>();
+    }
+}
+
+public class Node
+{
+    public int pathOrder;
+    public Vec2Int gridPosition;
 }
 
 public class GridSettings
@@ -34,11 +49,6 @@ public class Vec3
     }
 }
 
-public class GridPathNode
-{
-    public Vec2Int position;
-    public CellNavigationType cellNavigationType;
-}
 
 // Custom holder for 2D integer coordinates to avoid Unity's Vector2Int serialization issues
 public class Vec2Int

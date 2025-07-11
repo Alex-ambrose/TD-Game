@@ -5,12 +5,16 @@ using UnityEngine;
 public class FreeCam : MonoBehaviour
 {
     public float MoveSpeed = 5.0f;
-
+    public bool CanMove = true;
     void Update()
     {
+        if (!CanMove)
+        {
+            return;
+        }
         if (Input.GetKey(KeyCode.W))
         {
-            transform.position += transform.forward * MoveSpeed * Time.deltaTime ;
+            transform.position += transform.forward * MoveSpeed * Time.deltaTime;
         }
         if (Input.GetKey(KeyCode.S))
         {
