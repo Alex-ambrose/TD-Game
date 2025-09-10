@@ -33,12 +33,20 @@ public class Grid : MonoBehaviour
         return gridObjects[x, y] == null;
     }
 
-    public Vector3 GetCellPosition(Vector3Int gridposition)
+    public Vector3 GetWorldPosition(Vector3Int gridposition)
     {
         return new Vector3(
             gridposition.x * cellSize.x, 
             gridposition.y * cellSize.y, 
             gridposition.z * cellSize.z);
+    }
+
+    public Vector3 GetPlaceableWorldPosition(Vec2Int gridposition)
+    {
+        return new Vector3(
+            gridposition.x * cellSize.x,
+            cellSize.y * 2,
+            gridposition.y * cellSize.z);
     }
 
     public void Clear()
@@ -66,7 +74,7 @@ public class Grid : MonoBehaviour
             {
                 var newobject = Instantiate(gridCellPrefab);
                 newobject.gridPosition = new Vector2Int(x, z);
-                newobject.transform.position = GetCellPosition(new Vector3Int(x, 1, z));
+                newobject.transform.position = GetWorldPosition(new Vector3Int(x, 1, z));
                 if (CanAdd(x, z))
                 {
                     Add(newobject, x, z);
