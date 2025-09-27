@@ -12,6 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f66eac88eb96b174d93beff87a299dfe, type: 3}
   m_Name: Goblin
   m_EditorClassIdentifier: 
+  stats:
+    maxHealth: 10
+    currentHealth: 0
+    speed: 3
   availableAtWave: 0
   cost: 1
-  prefab: {fileID: 7170153019073658044, guid: d7249de5708e62044a0517a01e8268ed, type: 3}
+  Color: {r: 0.07291903, g: 0.5566038, b: 0, a: 1}

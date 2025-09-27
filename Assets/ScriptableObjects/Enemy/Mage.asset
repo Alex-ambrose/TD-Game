@@ -12,6 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f66eac88eb96b174d93beff87a299dfe, type: 3}
   m_Name: Mage
   m_EditorClassIdentifier: 
+  stats:
+    maxHealth: 5
+    currentHealth: 0
+    speed: 5
   availableAtWave: 1
   cost: 5
-  prefab: {fileID: 4857273341031754608, guid: 1fd2af8d0c9e33348b15132d477e9d95, type: 3}
+  Color: {r: 1, g: 0, b: 0, a: 1}

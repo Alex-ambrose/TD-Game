@@ -8,16 +8,17 @@ using Random = UnityEngine.Random;
 
 public class GameManager : Singleton<GameManager>
 {
+    [Header("Drag & Drop from scene")]
     public Grid grid;
     public float distance;
     public LayerMask layerMask;
-
+    public EnemyController enemyPrefab;
+    [Header("Drag & Drop from Assets")]
     public List<Wave> waves;
     public List<Enemy> enemies;
-    
+    [Header("Spawning Information")]
     public float spawnInterval;
     private WaveState waveState = new WaveState();
-
     public SavedLevel currentLevel;
     private List<EnemyController> spawnedEnemies = new List<EnemyController>();
     
@@ -93,8 +94,9 @@ public class GameManager : Singleton<GameManager>
         {
             waveState.pointsRemaining -= enemy.cost;
             Debug.Log("Spawn Enemy");
-            var newEnemy = Instantiate(enemy.prefab);
+            var newEnemy = Instantiate(enemyPrefab);
             spawnedEnemies.Add(newEnemy);
+            newEnemy.Setup(enemy);
         }
 
         if (waveState.pointsRemaining == 0)
