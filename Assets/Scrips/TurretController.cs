@@ -28,18 +28,18 @@ public class TurretController : MonoBehaviour
         
         if (interval < ShotTimer)
         {
-            ShotTimer = 0;
             var targetenemy = GetTarget();
             if (targetenemy != null)
             {
                 Shoot(targetenemy);
             }
-               
+            ShotTimer = 0;
         }
     }
     private EnemyController GetTarget()
     {
         var gameManager = GameManager.Instance;
+        // prevents an error where turret can't find a targer because there are no enemys Edge Case
         if (gameManager.spawnedEnemies == null || gameManager.spawnedEnemies.Count == 0)
         {
             return null;
