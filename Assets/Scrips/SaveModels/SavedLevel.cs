@@ -56,6 +56,16 @@ public class Vec2Int
     public int x;
     public int y;
 
+    public override int GetHashCode()
+    {
+        return  x.GetHashCode() + y.GetHashCode();
+    }
+    public override bool Equals(object obj)
+    {
+        var CastedObject = obj as Vec2Int;
+        return x == CastedObject.x && y == CastedObject.y;
+    }
+
     public static Vec2Int FromVector2Int(Vector2Int vector)
     {
         return new Vec2Int { x = vector.x, y = vector.y };

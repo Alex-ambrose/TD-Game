@@ -14,26 +14,36 @@ public class TurretController : MonoBehaviour
     public TargetingStatus targeting;
     public Turret Stats;
     public float ShotTimer;
+    public float interval => 1/Stats.AttackSpeed;
     void Start()
     {
         
     }
 
-    // Update is called once per frame
+    // TODO make turret follow target
+    // TODO
     void Update()
     {
         ShotTimer += Time.deltaTime;
-        if (Stats.AttackSpeed < ShotTimer)
+        
+        if (interval < ShotTimer)
         {
             ShotTimer = 0;
             var targetenemy = GetTarget();
-            Shoot(targetenemy);
+            if (targetenemy != null)
+            {
+                Shoot(targetenemy);
+            }
                
         }
     }
     private EnemyController GetTarget()
     {
         var gameManager = GameManager.Instance;
+        if (gameManager.spawnedEnemies == null || gameManager.spawnedEnemies.Count == 0)
+        {
+            return null;
+        }
         var gridPath = gameManager.currentLevel.gridPath;
         switch (targeting)
         {
@@ -52,7 +62,7 @@ public class TurretController : MonoBehaviour
     private void Shoot(EnemyController enemy)
     {
         var projectile = Instantiate(projectilePrefab);
-        projectile.SetTarget(enemy);
+        projectile.SetTarget(enemy, Stats);
         projectile.transform.position = ProjectileSpawnLocation.position;
 
     }

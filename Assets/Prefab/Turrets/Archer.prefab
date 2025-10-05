@@ -2212,6 +2212,7 @@ GameObject:
   - component: {fileID: 2451885898174155616}
   - component: {fileID: 5346341884761112642}
   - component: {fileID: 3215932319222708568}
+  - component: {fileID: 3607674820496181904}
   m_Layer: 0
   m_Name: Archer
   m_TagString: Untagged
@@ -2308,3 +2309,20 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &3607674820496181904
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6705567078886134042}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 29deeee9f2d11dd4c8f970fc49830f8b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  projectilePrefab: {fileID: 432712407997359298, guid: 68fb8ac350cbb46499d7636da841fe23, type: 3}
+  ProjectileSpawnLocation: {fileID: 8376227126498788954}
+  targeting: 0
+  Stats: {fileID: 0}
+  ShotTimer: 0

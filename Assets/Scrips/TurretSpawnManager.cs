@@ -9,10 +9,11 @@ public class TurretSpawnManager : MonoBehaviour
     public Turret CurrentTurret;
     public float distance;
     public LayerMask layerMask;
+    public Dictionary<string, TurretController> SpawnedTurrets;
     // Start is called before the first frame update
     void Start()
     {
-        
+        SpawnedTurrets = new Dictionary<string, TurretController> ();
     }
 
     // Update is called once per frame
@@ -22,13 +23,20 @@ public class TurretSpawnManager : MonoBehaviour
         {
             Spawn(cell);
         }
+        
     }
     public void Spawn(Cell cell)
     {
-
-        var newturret = Instantiate(CurrentTurret.prefab);
         var newPosition = Vec2Int.FromVector2Int(cell.gridPosition);
+        if (SpawnedTurrets.ContainsKey($"{newPosition.x},{newPosition.y}"))
+        {
+            return;
+        }
+        var newturret = Instantiate(CurrentTurret.prefab);
+        newturret.Stats = CurrentTurret;
+        
         newturret.transform.position = GameManager.Instance.grid.GetPlaceableWorldPosition(newPosition);
+        SpawnedTurrets.Add($"{newPosition.x},{newPosition.y}", newturret);
 
         
     }

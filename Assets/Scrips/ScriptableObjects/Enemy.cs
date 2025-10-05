@@ -17,4 +17,5 @@ public class EnemyStats
     public float maxHealth;
     public float currentHealth;
     public float speed;
+    public float healthPerSecond;
 }
