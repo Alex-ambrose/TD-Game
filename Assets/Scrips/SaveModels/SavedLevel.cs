@@ -60,4 +60,9 @@ public class Vec2Int
     {
         return new Vec2Int { x = vector.x, y = vector.y };
     }
+    public static Vector2Int ToVector2Int(Vec2Int vector)
+    {
+        
+        return new Vector2Int (vector.x, vector.y);
+    }
 }

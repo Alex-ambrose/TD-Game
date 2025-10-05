@@ -12,7 +12,7 @@ public class EnemyController : MonoBehaviour
     public TMP_Text NameText;
     private Collider myCollider;
     private MeshRenderer myRenderer;
-    private int currentPathIndex = 0;
+    public int currentPathIndex = 0;
     public Enemy Enemy;
     private Color myColor=> Enemy.Color;
     private EnemyStats stats=> Enemy.stats;

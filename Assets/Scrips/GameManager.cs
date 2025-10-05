@@ -10,8 +10,6 @@ public class GameManager : Singleton<GameManager>
 {
     [Header("Drag & Drop from scene")]
     public Grid grid;
-    public float distance;
-    public LayerMask layerMask;
     public EnemyController enemyPrefab;
     [Header("Drag & Drop from Assets")]
     public List<Wave> waves;
@@ -20,7 +18,7 @@ public class GameManager : Singleton<GameManager>
     public float spawnInterval;
     private WaveState waveState = new WaveState();
     public SavedLevel currentLevel;
-    private List<EnemyController> spawnedEnemies = new List<EnemyController>();
+    public List<EnemyController> spawnedEnemies = new List<EnemyController>();
     
 
     public void LoadFromSave(string fileName)
@@ -33,10 +31,7 @@ public class GameManager : Singleton<GameManager>
 
     void Update()
     {
-        if (TryClickCell(out Cell cell))
-        {
-            cell.Toggle();
-        }
+        
 
         if (waveState.status == WaveStatus.Spawning)
         {
@@ -52,28 +47,6 @@ public class GameManager : Singleton<GameManager>
         {
             CompleteWave();
         }
-    }
-
-    private bool TryClickCell(out Cell cell)
-    {
-        cell = null;
-
-        if (!Input.GetMouseButtonDown(0))
-        {
-            return false;
-        }
-
-        var mousePosition = Input.mousePosition;
-        var ray = Camera.main.ScreenPointToRay(mousePosition);
-
-        if (Physics.Raycast(ray, out var hit, distance, layerMask))
-        {
-            cell = hit.transform.gameObject.GetComponent<Cell>();
-            Debug.Log(hit.transform.gameObject.name);
-            Debug.DrawLine(ray.origin, ray.direction * distance, Color.blue, 5);
-        }
-
-        return cell != null;
     }
 
     public void SpawnNextWave()
