@@ -6,6 +6,7 @@ using UnityEngine;
 public class HudController : Singleton<HudController>
 {
     public TMP_Text scoreText;
+    public TMP_Text livesText;
     public ButtonItem nextWaveButton;
 
     void Start()
@@ -26,6 +27,15 @@ public class HudController : Singleton<HudController>
     public void OnWaveStateChanged(WaveStatus waveStatus)
     {
         nextWaveButton.button.interactable = waveStatus == WaveStatus.Completed;
+    }
+
+    public void UpdateLives(int remaningLives)
+    {
+        livesText.text = $"Lives: {remaningLives}";
+    }
+    public void UpdateGold(int Gold)
+    {
+        scoreText.text = $"Gold: {Gold}";
     }
 
     void Update()

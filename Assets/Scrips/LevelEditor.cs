@@ -123,6 +123,7 @@ public class LevelEditor : MonoBehaviour
         //get a list of all spawned objects (position, type)
         var SavedLevel = new SavedLevel()
         {
+            levelName = levelNameInput.text,
             gridPath = path,
             gridSettings = new GridSettings()
             {
@@ -132,9 +133,14 @@ public class LevelEditor : MonoBehaviour
             }
         };
         //write it to a file
-        var fileName = Path.Combine(Application.persistentDataPath, levelNameInput.text);
+        var levelDataFolderPath = Path.Combine(Application.persistentDataPath, GameManager.levelFolderName);
+        if(!Directory.Exists(levelDataFolderPath))
+        {
+            Directory.CreateDirectory(levelDataFolderPath);
+        }
+        var levelDataFilePath = Path.Combine(levelDataFolderPath, levelNameInput.text + GameManager.fileExtention);
         var fileData = JsonConvert.SerializeObject(SavedLevel);
-        File.WriteAllText(fileName, fileData);
+        File.WriteAllText(levelDataFilePath, fileData);
 
         path = new GridPath();
         grid.GenerateGrid();

@@ -11,7 +11,8 @@ public class UiManager : MonoBehaviour
     void Start()
     {
         levelSelectPanel.SetActive(true);
-        var Files = Directory.EnumerateFiles(Application.persistentDataPath);
+        var FolderPath = Path.Combine(Application.persistentDataPath, "Levels");
+        var Files = Directory.EnumerateFiles(FolderPath);
         foreach (var file in Files)
         {
             var buttonItem = Instantiate(levelSelectButtonPrefab);
@@ -31,7 +32,8 @@ public class UiManager : MonoBehaviour
 
     void LoadLevel(string file)
     {
-        gameManager.LoadFromSave(file);
+        var fileName = Path.GetFileName(file);
+        gameManager.LoadFromSave(fileName);
         levelSelectPanel.gameObject.SetActive(false);
     }
 }

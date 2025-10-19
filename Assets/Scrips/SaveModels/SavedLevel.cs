@@ -1,12 +1,16 @@
 using JetBrains.Annotations;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+
+
 
 public class SavedLevel
 {
     public GridPath gridPath;
     public GridSettings gridSettings;
+    public string levelName;
 }
 
 public class GridPath
@@ -75,4 +79,5 @@ public class Vec2Int
         
         return new Vector2Int (vector.x, vector.y);
     }
+
 }

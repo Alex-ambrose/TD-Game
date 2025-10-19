@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using UnityEngine;
+using static UnityEngine.EventSystems.EventTrigger;
 using Random = UnityEngine.Random;
 
 public class GameManager : Singleton<GameManager>
@@ -12,19 +13,37 @@ public class GameManager : Singleton<GameManager>
     public Grid grid;
     public EnemyController enemyPrefab;
     [Header("Drag & Drop from Assets")]
-    public List<Wave> waves;
     public List<Enemy> enemies;
     [Header("Spawning Information")]
     public float spawnInterval;
-    private WaveState waveState = new WaveState();
+    [SerializeField]
+    public GameState gameState;
     public SavedLevel currentLevel;
     public List<EnemyController> spawnedEnemies = new List<EnemyController>();
+    public const string levelFolderName = "Levels";
+    public const string GameStateFolderName = "GameState";
+    public const string fileExtention = ".json";
+
     
 
     public void LoadFromSave(string fileName)
     {
-        var levelData = File.ReadAllText(fileName);
+        
+        var levelDataFolderPath = Path.Combine(Application.persistentDataPath, levelFolderName);
+        var levelDataFilePath = Path.Combine(levelDataFolderPath, fileName);
+        var levelData = File.ReadAllText(levelDataFilePath);
+        var GameStateFolderPath = Path.Combine(Application.persistentDataPath, GameStateFolderName);
+        var GameStateFilePath = Path.Combine(GameStateFolderPath, fileName);
+        var GameState = File.ReadAllText(GameStateFilePath);
+
         currentLevel = JsonConvert.DeserializeObject<SavedLevel>(levelData);
+        gameState = JsonConvert.DeserializeObject<GameState>(GameState);
+        if (gameState.currentWaveIndex == 0)
+        {
+            gameState.Gold = 50;
+            gameState.lives = 10;
+        }
+        gameState.status = WaveStatus.Completed;
         grid.LoadGridFromSave(currentLevel);
     }
 
@@ -33,89 +52,86 @@ public class GameManager : Singleton<GameManager>
     {
         
 
-        if (waveState.status == WaveStatus.Spawning)
+        if (gameState.status == WaveStatus.Spawning)
         {
-            waveState.spawnTimer += Time.deltaTime;
-            if (waveState.spawnTimer > spawnInterval)
+            gameState.spawnTimer += Time.deltaTime;
+            if (gameState.spawnTimer > spawnInterval)
             {
                 SpawnEnemy();
-                waveState.spawnTimer = 0;
+                gameState.spawnTimer = 0;
             }
-        }
-
-        if(waveState.status == WaveStatus.Running && spawnedEnemies.Count == 0)
-        {
-            CompleteWave();
         }
     }
 
+    private void OnApplicationQuit()
+    {
+        SaveGameState();
+    }
     public void SpawnNextWave()
     {
-        waveState.status = WaveStatus.Spawning;
-        waveState.pointsRemaining = waves[waveState.currentWaveIndex].pointValue;
+        gameState.status = WaveStatus.Spawning;
+        gameState.pointsRemaining = (gameState.currentWaveIndex *5)+5;
     }
 
     private void SpawnEnemy()
     {
-        var currentWave = waves[waveState.currentWaveIndex];
 
-        var availableEnemies = enemies.Where(e => e.cost <= waveState.pointsRemaining && e.availableAtWave >= waveState.currentWaveIndex).ToList();
+        var availableEnemies = enemies.Where(e => e.cost <= gameState.pointsRemaining && e.availableAtWave <= gameState.currentWaveIndex).ToList();
         var randomIndex = Random.Range(0, availableEnemies.Count());
         var enemy = availableEnemies[randomIndex];
 
-        if (enemy.cost <= waveState.pointsRemaining)
+        if (enemy.cost <= gameState.pointsRemaining)
         {
-            waveState.pointsRemaining -= enemy.cost;
+            gameState.pointsRemaining -= enemy.cost;
             Debug.Log("Spawn Enemy");
             var newEnemy = Instantiate(enemyPrefab);
             spawnedEnemies.Add(newEnemy);
             newEnemy.Setup(enemy);
         }
 
-        if (waveState.pointsRemaining == 0)
+        if (gameState.pointsRemaining == 0)
         {
-            waveState.status = WaveStatus.Running;
+            gameState.status = WaveStatus.Running;
         }
     }
 
     // Called when enemy reached the end, or killed by tower
-    public void KillEnemy(EnemyController enemy)
+    public void KillEnemy(EnemyController enemy,bool isFinished)
     {
+        if (isFinished)
+        {
+            --gameState.lives;
+            HudController.Instance.UpdateLives(gameState.lives);
+        }
+        else
+        {
+            gameState.Gold += enemy.Enemy.cost * 10;
+        }
         spawnedEnemies.Remove(enemy);
         Destroy(enemy.gameObject);
+        if (gameState.status == WaveStatus.Running && spawnedEnemies.Count == 0)
+        {
+            CompleteWave();
+        }
     }
 
     public void CompleteWave()
     {
-        waveState.status = WaveStatus.Completed;
+        gameState.currentWaveIndex++;
+        gameState.status = WaveStatus.Completed;
+        SaveGameState();
     }
-}
 
-
-public class WaveState
-{
-    private WaveStatus _status = WaveStatus.Completed;
-    public WaveStatus status
+    private void SaveGameState()
     {
-        get 
+        var GameStateFolderPath = Path.Combine(Application.persistentDataPath, GameStateFolderName);
+        var GameStateFilePath = Path.Combine(GameStateFolderPath, currentLevel.levelName);
+        if (!Directory.Exists(GameStateFolderPath))
         {
-            return _status;
+            Directory.CreateDirectory(GameStateFolderPath);
         }
-        set
-        {
-            _status = value;
-            HudController.Instance.OnWaveStateChanged(_status);
-        }
+        var savedData = JsonConvert.SerializeObject(gameState);
+        File.WriteAllText(GameStateFilePath + fileExtention, savedData);
     }
-
-    public float spawnTimer;
-    public int pointsRemaining;
-    public int currentWaveIndex = 0;
 }
 
-public enum WaveStatus
-{
-    Spawning,
-    Running,
-    Completed
-}

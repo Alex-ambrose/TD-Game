@@ -15,7 +15,7 @@ public class EnemyController : MonoBehaviour
     public int currentPathIndex = 0;
     public Enemy Enemy;
     private Color myColor=> Enemy.Color;
-    private EnemyStats stats=> Enemy.stats;
+    public EnemyStats stats=> Enemy.stats;
     private float TimeSinceHealed;
     private const float HealInterval = 1;
 
@@ -52,9 +52,7 @@ public class EnemyController : MonoBehaviour
         myRenderer.material.color = newColor;
         if (stats.currentHealth <= 0)
         {
-            GameManager.Instance.spawnedEnemies.Remove(this);
-            Destroy(gameObject);
-
+            GameManager.Instance.KillEnemy(this,false);
         }
     }
 
@@ -75,7 +73,7 @@ public class EnemyController : MonoBehaviour
             currentPathIndex++;
             if (currentPathIndex + 1 >= GameManager.Instance.currentLevel.gridPath.nodes.Count)
             {
-                GameManager.Instance.KillEnemy(this);
+                GameManager.Instance.KillEnemy(this, true);
                 return;
             }
 

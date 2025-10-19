@@ -4,7 +4,7 @@ using Unity.PlasticSCM.Editor.WebApi;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class TurretSpawnManager : MonoBehaviour
+public class TurretSpawnManager : Singleton<TurretSpawnManager>
 {
     public Turret CurrentTurret;
     public float distance;
@@ -32,6 +32,11 @@ public class TurretSpawnManager : MonoBehaviour
         {
             return;
         }
+        if (GameManager.Instance.gameState.Gold < CurrentTurret.Cost)
+        {
+            return;
+        }
+        GameManager.Instance.gameState.Gold -= CurrentTurret.Cost;
         var newturret = Instantiate(CurrentTurret.prefab);
         newturret.Stats = CurrentTurret;
         
@@ -61,5 +66,10 @@ public class TurretSpawnManager : MonoBehaviour
         }
 
         return cell != null;
+    }
+
+    public void SetCurrentTurret(Turret t)
+    {
+        CurrentTurret = t;
     }
 }

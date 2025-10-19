@@ -12,4 +12,5 @@ public class Turret : ScriptableObject
     public int Cost;
     public string Description;
     public TurretController prefab;
+    public Sprite ShopImage;
 }

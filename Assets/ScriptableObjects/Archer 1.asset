@@ -10,13 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6d8c94edefd7ae041984d558512df048, type: 3}
-  m_Name: Archer
+  m_Name: Archer 1
   m_EditorClassIdentifier: 
   Damage: 2
-  AttackSpeed: 10
+  AttackSpeed: 5
   Range: 0
   Velocity: 0
-  Cost: 10
+  Cost: 5
   Description: 
   prefab: {fileID: 3607674820496181904, guid: 1c080ebdda7409d48aab202c2d479c5b, type: 3}
   ShopImage: {fileID: 21300000, guid: 15d6e6d5780695d45a3e0a34048cce00, type: 3}
