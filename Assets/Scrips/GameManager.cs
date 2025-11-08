@@ -125,13 +125,7 @@ public class GameManager : Singleton<GameManager>
     private void SaveGameState()
     {
         var GameStateFolderPath = Path.Combine(Application.persistentDataPath, GameStateFolderName);
-        var GameStateFilePath = Path.Combine(GameStateFolderPath, currentLevel.levelName);
-        if (!Directory.Exists(GameStateFolderPath))
-        {
-            Directory.CreateDirectory(GameStateFolderPath);
-        }
-        var savedData = JsonConvert.SerializeObject(gameState);
-        File.WriteAllText(GameStateFilePath + fileExtention, savedData);
+        FileUtils.TrySaveFile(GameStateFolderPath, currentLevel.levelName, gameState);
     }
 }
 
