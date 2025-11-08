@@ -22,22 +22,27 @@ public class GameManager : Singleton<GameManager>
     public List<EnemyController> spawnedEnemies = new List<EnemyController>();
     public const string levelFolderName = "Levels";
     public const string GameStateFolderName = "GameState";
-    public const string fileExtention = ".json";
-
-    
 
     public void LoadFromSave(string fileName)
     {
-        
-        var levelDataFolderPath = Path.Combine(Application.persistentDataPath, levelFolderName);
-        var levelDataFilePath = Path.Combine(levelDataFolderPath, fileName);
-        var levelData = File.ReadAllText(levelDataFilePath);
-        var GameStateFolderPath = Path.Combine(Application.persistentDataPath, GameStateFolderName);
-        var GameStateFilePath = Path.Combine(GameStateFolderPath, fileName);
-        var GameState = File.ReadAllText(GameStateFilePath);
+        var levelData = FileUtils.GetSaveFileData(levelFolderName, fileName);
+        var GameState = FileUtils.GetSaveFileData(GameStateFolderName, fileName);
 
         currentLevel = JsonConvert.DeserializeObject<SavedLevel>(levelData);
         gameState = JsonConvert.DeserializeObject<GameState>(GameState);
+
+        if(currentLevel == null)
+        {
+            Debug.LogWarning("No saved level found, creating new level.");
+            currentLevel = new SavedLevel();
+            return;
+        }
+
+        if(gameState == null)
+        {
+            Debug.LogWarning("No saved game state found, starting new game.");
+            gameState = new GameState();
+        }
         if (gameState.currentWaveIndex == 0)
         {
             gameState.Gold = 50;
@@ -125,6 +130,11 @@ public class GameManager : Singleton<GameManager>
     private void SaveGameState()
     {
         var GameStateFolderPath = Path.Combine(Application.persistentDataPath, GameStateFolderName);
+
+        if(currentLevel == null){
+            Debug.LogWarning("No level loaded, cannot save game state.");
+            return;
+        }
         FileUtils.TrySaveFile(GameStateFolderPath, currentLevel.levelName, gameState);
     }
 }

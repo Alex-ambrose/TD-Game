@@ -134,13 +134,7 @@ public class LevelEditor : MonoBehaviour
         };
         //write it to a file
         var levelDataFolderPath = Path.Combine(Application.persistentDataPath, GameManager.levelFolderName);
-        if(!Directory.Exists(levelDataFolderPath))
-        {
-            Directory.CreateDirectory(levelDataFolderPath);
-        }
-        var levelDataFilePath = Path.Combine(levelDataFolderPath, levelNameInput.text + GameManager.fileExtention);
-        var fileData = JsonConvert.SerializeObject(SavedLevel);
-        File.WriteAllText(levelDataFilePath, fileData);
+        FileUtils.TrySaveFile(levelDataFolderPath, levelNameInput.text, SavedLevel);
 
         path = new GridPath();
         grid.GenerateGrid();

@@ -7,7 +7,7 @@ using UnityEngine;
 
 public static class FileUtils
 {
-    public static readonly string fileExtention = ".json";
+    public static readonly string FILE_EXTENSION = ".json";
 
     public static void TrySaveFile(string folderPath, string filename, object contents)
     {
@@ -17,13 +17,12 @@ public static class FileUtils
         }
 
         var filePath = Path.Combine(folderPath, filename);
-        var filePathWithExtention = filePath + fileExtention;
+        var filePathWithExtention = filePath + FILE_EXTENSION;
 
         var jsonString = JsonConvert.SerializeObject(contents);
-        File.WriteAllText(filePathWithExtention, jsonString);
         try
         {
-            File.WriteAllText(filePath, jsonString);
+            File.WriteAllText(filePathWithExtention, jsonString);
         }
         catch (System.Exception e)
         {
@@ -51,5 +50,25 @@ public static class FileUtils
             Debug.LogError($"Failed to get files in folder at {folderPath}. Exception: {e}");
             return new string[0];
         }
+    }
+
+    public static string GetSaveFileData(string folderName, string fileName)
+    {
+        var folderPath = Path.Combine(Application.persistentDataPath, folderName);
+
+        if (!Directory.Exists(folderPath))
+        {
+            Directory.CreateDirectory(folderPath);
+        }
+        
+        var filePath = Path.Combine(folderPath, fileName);
+
+        if(!File.Exists(filePath))
+        {
+            Debug.LogWarning($"File {fileName} does not exist in folder {folderPath}");
+            return string.Empty;
+        }
+
+        return File.ReadAllText(filePath);
     }
 }
