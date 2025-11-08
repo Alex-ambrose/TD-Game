@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
 
@@ -10,6 +11,7 @@ public class Grid : MonoBehaviour
     public Vector3 cellSize = new Vector3(1,1,1);
     public Cell[,] gridObjects;
     public Cell gridCellPrefab;
+   
     public float TotalGridWidth => width*cellSize.x;
     public float TotalGridHeight => height*cellSize.y;
     public void Add(Cell gameObject, int x, int y)

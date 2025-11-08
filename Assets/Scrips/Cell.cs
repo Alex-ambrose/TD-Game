@@ -1,11 +1,13 @@
+using System;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 public enum CellNavigationType
 {
-    Start = 0,
-    Path = 1,
-    Finish = 2,
-    None = 3
+    None,
+    Start,
+    Path,
+    Finish,
 }
 
 public class Cell : MonoBehaviour
@@ -25,7 +27,6 @@ public class Cell : MonoBehaviour
     void Start()
     {
         meshRenderer = GetComponent<MeshRenderer>();
-        navigationType = CellNavigationType.None;
     }
 
     void Update()
@@ -79,6 +80,12 @@ public class Cell : MonoBehaviour
 
     public bool HasNavigationType()
     { 
-        return navigationType != CellNavigationType.None; 
+        bool hasNavigationType = navigationType != CellNavigationType.None; 
+        return hasNavigationType;
+    }
+
+    public override string ToString()
+    {
+        return $"{gridPosition.x},{gridPosition.y},{navigationType}";
     }
 }

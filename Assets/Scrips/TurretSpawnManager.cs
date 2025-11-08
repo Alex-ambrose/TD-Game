@@ -27,12 +27,18 @@ public class TurretSpawnManager : Singleton<TurretSpawnManager>
     }
     public void Spawn(Cell cell)
     {
+        cell.GetComponent<MeshRenderer>();
+        Material myMaterial = cell.GetComponent<Material>();
         var newPosition = Vec2Int.FromVector2Int(cell.gridPosition);
         if (SpawnedTurrets.ContainsKey($"{newPosition.x},{newPosition.y}"))
         {
             return;
         }
         if (GameManager.Instance.gameState.Gold < CurrentTurret.Cost)
+        {
+            return;
+        }
+        if(cell.HasNavigationType())
         {
             return;
         }
