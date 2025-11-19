@@ -11,8 +11,8 @@ public class UiManager : MonoBehaviour
     void Start()
     {
         levelSelectPanel.SetActive(true);
-        var FolderPath = Path.Combine(Application.persistentDataPath, "Levels");
-        var Files = Directory.EnumerateFiles(FolderPath);
+        
+        var Files = FileUtils.GetFilesInAppDataFolder("Levels");
         foreach (var file in Files)
         {
             var buttonItem = Instantiate(levelSelectButtonPrefab);
