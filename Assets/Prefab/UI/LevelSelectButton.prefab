@@ -269,4 +269,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   button: {fileID: 44020105973429251}
-  text: {fileID: 2475836732524010356}
+  buttonText: {fileID: 2475836732524010356}

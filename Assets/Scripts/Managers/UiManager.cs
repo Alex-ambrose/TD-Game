@@ -17,7 +17,7 @@ public class UiManager : MonoBehaviour
         {
             var buttonItem = Instantiate(levelSelectButtonPrefab);
             buttonItem.button.onClick.AddListener(() => LoadLevel(file));
-            buttonItem.text.text = Path.GetFileName(file);
+            buttonItem.buttonText.text = Path.GetFileName(file);
             buttonItem.transform.parent = levelButtonContainer;
         }
     }

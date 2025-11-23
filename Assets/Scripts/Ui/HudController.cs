@@ -12,7 +12,7 @@ public class HudController : Singleton<HudController>
     void Start()
     {
         scoreText.text = "Gold : 0";
-        nextWaveButton.text.text = "Next Wave";
+        nextWaveButton.buttonText.text = "Next Wave";
         nextWaveButton.button.onClick.AddListener(() => {
             SpawnNextWave();
         });

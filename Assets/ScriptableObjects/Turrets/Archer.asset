@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Damage: 3
   AttackSpeed: 1
-  Range: 4
+  Range: 1
   Velocity: 3
   Cost: 5
   Description: 
