@@ -6,7 +6,7 @@ using UnityEngine;
 public class ProjectileController : MonoBehaviour
 {
     public EnemyController myTarget;
-    public TurretStats myStats;
+    public float damage;
 
     void Update()
     {
@@ -23,15 +23,15 @@ public class ProjectileController : MonoBehaviour
         }
         transform.position += movementDesired.normalized * Time.deltaTime * 15;
     }
-    public void SetTarget(EnemyController enemy, TurretStats Stats)
+    public void SetTarget(EnemyController enemy, float damage)
     {
         myTarget = enemy;
-        myStats = Stats;
+        this.damage = damage;
     }
 
     public void HitEnemy()
     {
-        myTarget.UpdateHealth(-myStats.Damage);
+        myTarget.UpdateHealth(-damage);
         Destroy(gameObject);
     }
 

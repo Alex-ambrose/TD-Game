@@ -86,7 +86,7 @@ public class TurretController : MonoBehaviour
     private void Shoot(EnemyController enemy)
     {
         var projectile = Instantiate(projectilePrefab);
-        projectile.SetTarget(enemy, TurretStats);
+        projectile.SetTarget(enemy, TurretStats.Damage);
         projectile.transform.position = ProjectileSpawnLocation.position;
     }
 }
