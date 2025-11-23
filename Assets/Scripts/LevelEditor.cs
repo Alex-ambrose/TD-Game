@@ -22,7 +22,7 @@ public class LevelEditor : MonoBehaviour
 
     [Header("Runtime variables")]
     public CellNavigationType currentNavigationType;
-    private Camera camera;
+    private Camera myCamera;
     private GridPath path;
 
     private void Awake()
@@ -164,15 +164,15 @@ public class LevelEditor : MonoBehaviour
     }
     void SetCameraPosition()
     {
-        if(camera ==null)
+        if(myCamera ==null)
         {
-            camera = Camera.main;
+            myCamera = Camera.main;
         }
 
         float x = grid.TotalGridWidth / 2;
         float y = grid.TotalGridHeight / 2;
-        camera.transform.position = new Vector3(x,10,y);
-        camera.transform.rotation = Quaternion.Euler(90,0,0);
+        myCamera.transform.position = new Vector3(x,10,y);
+        myCamera.transform.rotation = Quaternion.Euler(90,0,0);
 
     }
 

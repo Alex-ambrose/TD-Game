@@ -1,7 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using Unity.PlasticSCM.Editor.WebApi;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class TurretSpawnManager : Singleton<TurretSpawnManager>
@@ -19,7 +17,6 @@ public class TurretSpawnManager : Singleton<TurretSpawnManager>
         SpawnedTurrets = new Dictionary<string, TurretController> ();
     }
 
-    // Update is called once per frame
     void Update()
     {
         if (Input.GetMouseButtonDown(1))
@@ -107,5 +104,12 @@ public class TurretSpawnManager : Singleton<TurretSpawnManager>
         var transparentColor = SelectedTurretRenderer.material.color;
         transparentColor.a = 0.7f;
         SelectedTurretRenderer.material.color = transparentColor;
+    }
+
+    public void ClearCurrentTurret()
+    {
+        SelectedTurretPrefab = null;
+        SelectedTurretInstance = null;
+        SelectedTurretRenderer = null;
     }
 }

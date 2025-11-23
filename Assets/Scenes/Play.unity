@@ -451,7 +451,6 @@ GameObject:
   - component: {fileID: 350527650}
   - component: {fileID: 350527649}
   - component: {fileID: 350527651}
-  - component: {fileID: 350527652}
   - component: {fileID: 350527653}
   m_Layer: 0
   m_Name: GameManager
@@ -517,23 +516,6 @@ MonoBehaviour:
   layerMask:
     serializedVersion: 2
     m_Bits: 1
---- !u!114 &350527652
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 350527648}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 478477f5fdaee0c45a22a8ae30645efa, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  turretScriptableObjects:
-  - {fileID: 11400000, guid: ab34e43d9ef64b34da8758f459613aa6, type: 2}
-  - {fileID: 11400000, guid: affbf580bc3b5784d91c8be36596bed0, type: 2}
-  shopItemParent: {fileID: 330634980}
-  shopItemPrefab: {fileID: -906859401546265179, guid: d32ed441d6291b74b91f4c562f0ddf39, type: 3}
 --- !u!114 &350527653
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1585,6 +1567,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1043904902}
+  - component: {fileID: 1043904903}
   m_Layer: 5
   m_Name: Turret Shop
   m_TagString: Untagged
@@ -1612,6 +1595,23 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1043904903
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1043904901}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a25ec3162b8fc5743bfa29383e38e8b0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  turretScriptableObjects:
+  - {fileID: 11400000, guid: ab34e43d9ef64b34da8758f459613aa6, type: 2}
+  - {fileID: 11400000, guid: affbf580bc3b5784d91c8be36596bed0, type: 2}
+  shopItemParent: {fileID: 330634980}
+  shopItemPrefab: {fileID: -906859401546265179, guid: d32ed441d6291b74b91f4c562f0ddf39, type: 3}
 --- !u!1 &1062128845
 GameObject:
   m_ObjectHideFlags: 0

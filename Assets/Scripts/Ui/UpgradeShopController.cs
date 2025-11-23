@@ -29,8 +29,15 @@ public class UpgradeShopController : MonoBehaviour
         }
     }
 
+    // TODO: call this method when player's money changes, or set up an event
     void Refresh()
     {
+        // Since this is also called on OnEnable, we need to check for null
+        if (upgradeItemInstances == null)
+        {
+            return;
+        }
+
         foreach(var upgradeItem in upgradeItemInstances)
         {
             upgradeItem.RefreshState();
