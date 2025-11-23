@@ -40,6 +40,11 @@ public class UpgradeItem : MonoBehaviour
     private string GetNextTierDescription()
     {
         var managedUpgrade = UpgradeManager.Instance.upgrades.Find(u => u.statAffected == upgrade.statAffected);
+
+        if(managedUpgrade.tiers.Length <= managedUpgrade.currentTierIndex + 1)
+        {
+            return "Maxxed";
+        }
         var nextTier = managedUpgrade.tiers[managedUpgrade.currentTierIndex + 1];
         return $"Increases {upgrade.statAffected.ToString()} by {nextTier.value}";
     }

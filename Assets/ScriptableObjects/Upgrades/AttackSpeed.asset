@@ -15,10 +15,10 @@ MonoBehaviour:
   statAffected: 1
   upgradeType: 0
   tiers:
-  - value: 0.1
+  - value: 1.1
     cost: 3
-  - value: 0.1
+  - value: 1.5
     cost: 5
-  - value: 0.1
+  - value: 2
     cost: 15
-  currentTierIndex: 0
+  currentTierIndex: 1

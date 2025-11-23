@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Archer 1
   m_EditorClassIdentifier: 
   Damage: 5
-  AttackSpeed: 0.5
+  AttackSpeed: 1.5
   Range: 10
   Velocity: 1
   Cost: 15

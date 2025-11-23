@@ -22,6 +22,7 @@ public class UpgradeSO : ScriptableObject
     public UpgradeStats statAffected;
     public UpgradeType upgradeType;
     public UpgradeTier[] tiers;
+    // TODO: move this to its own class for saving
     public int currentTierIndex = 0;
 }
 
