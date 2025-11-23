@@ -1,26 +1,18 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class ShopManager : Singleton<ShopManager>
 {
-    public List<Turret> Turrets;
-    public Transform shop;
+    public List<TurretSO> turretScriptableObjects;
+    public Transform shopItemParent;
     public ShopItemController shopItemPrefab;
+
     void Start()
     {
-        foreach (Turret t in Turrets)
+        foreach (TurretSO t in turretScriptableObjects)
         {
-            var shopItem = Instantiate(shopItemPrefab,shop);
+            var shopItem = Instantiate(shopItemPrefab,shopItemParent);
             shopItem.Setup(t);      
         }
-
-
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 }

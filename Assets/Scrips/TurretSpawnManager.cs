@@ -6,7 +6,7 @@ using UnityEngine;
 
 public class TurretSpawnManager : Singleton<TurretSpawnManager>
 {
-    public Turret SelectedTurretPrefab;
+    public TurretSO SelectedTurretPrefab;
     TurretController SelectedTurretInstance;
     MeshRenderer SelectedTurretRenderer;
     public float distance;
@@ -96,17 +96,16 @@ public class TurretSpawnManager : Singleton<TurretSpawnManager>
         return cell;
     }
 
-    public void SetCurrentTurret(Turret t)
+    public void SetCurrentTurret(TurretSO turretSO)
     {
-        SelectedTurretPrefab = t;
+        SelectedTurretPrefab = turretSO;
         SelectedTurretInstance = Instantiate(SelectedTurretPrefab.prefab);
-        SelectedTurretInstance.Stats = SelectedTurretPrefab;
+        SelectedTurretInstance.TurretStats = new TurretStats(SelectedTurretPrefab);
         SelectedTurretInstance.gameObject.layer = TurretLayer;
         SelectedTurretInstance.gameObject.SetActive(false);
         SelectedTurretRenderer = SelectedTurretInstance.GetComponent<MeshRenderer>();
         var transparentColor = SelectedTurretRenderer.material.color;
         transparentColor.a = 0.7f;
         SelectedTurretRenderer.material.color = transparentColor;
-
     }
 }

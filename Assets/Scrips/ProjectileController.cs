@@ -6,7 +6,8 @@ using UnityEngine;
 public class ProjectileController : MonoBehaviour
 {
     public EnemyController myTarget;
-    public Turret myStats;
+    public TurretStats myStats;
+
     void Update()
     {
         if (myTarget == null)
@@ -22,7 +23,7 @@ public class ProjectileController : MonoBehaviour
         }
         transform.position += movementDesired.normalized * Time.deltaTime * 15;
     }
-    public void SetTarget(EnemyController enemy, Turret Stats)
+    public void SetTarget(EnemyController enemy, TurretStats Stats)
     {
         myTarget = enemy;
         myStats = Stats;

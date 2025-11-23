@@ -10,7 +10,7 @@ public class ShopItemController : MonoBehaviour
     public Button Button;
     public TMP_Text ButtonText;
 
-    public void Setup(Turret t)
+    public void Setup(TurretSO t)
     {
         Image.sprite = t.ShopImage;
         ButtonText.text = $"{t.Cost}";
