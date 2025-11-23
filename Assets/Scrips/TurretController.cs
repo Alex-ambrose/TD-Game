@@ -7,6 +7,8 @@ public class TurretController : MonoBehaviour
 {
     public ProjectileController projectilePrefab;
     public Transform ProjectileSpawnLocation;
+    public Transform TurretTop;
+    public float RotationSpeed;
     public enum TargetingStatus
     {
         closest, furthest,strongest,weakest
@@ -24,15 +26,24 @@ public class TurretController : MonoBehaviour
     // TODO
     void Update()
     {
+        var targetenemy = GetTarget();
         ShotTimer += Time.deltaTime;
-        
+        if (targetenemy == null)   
+        {
+            return;
+        }
+        //TurretTop.LookAt(targetenemy.transform);
+        var direction = (TurretTop.position - targetenemy.transform.position).normalized;
+        var rotation = Quaternion.LookRotation(direction);
+        var rotationAngles = rotation.eulerAngles;
+        rotationAngles.x = 0;
+        rotationAngles.z = 0;
+        rotation = Quaternion.Euler(rotationAngles);
+        TurretTop.rotation = Quaternion.RotateTowards(TurretTop.rotation, rotation, Time.deltaTime * RotationSpeed);
         if (interval < ShotTimer)
         {
-            var targetenemy = GetTarget();
-            if (targetenemy != null)
-            {
-                Shoot(targetenemy);
-            }
+            Shoot(targetenemy);
+            
             ShotTimer = 0;
         }
     }
